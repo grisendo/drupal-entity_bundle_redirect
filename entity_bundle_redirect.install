@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the entity_bundle_redirect module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function entity_bundle_redirect_schema() {
+
+  $schema['entity_bundle_redirect'] = array(
+    'description' => 'Stores Entity bundle redirections',
+    'fields' => array(
+      'ebrid' => array(
+        'description' => 'The primary identifier for the table.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'entity_type' => array(
+        'description' => 'The type of this entity.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'entity_bundle' => array(
+        'description' => 'The bundle of this entity.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'language' => array(
+        'description' => 'The {languages}.language of this redirect.',
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'link_path' => array(
+        'description' => 'The path or external path this entity points to.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('ebrid'),
+    'unique keys' => array(
+      'uk_ebrid_type_bundle_lang' => array('entity_type', 'entity_bundle', 'language'),
+    ),
+    'indexes' => array(
+      'idx_ebrid_type' => array('entity_type'),
+      'idx_ebrid_bundle' => array('entity_bundle'),
+      'idx_ebrid_lang' => array('language'),
+      'idx_ebrid_type_bundle' => array('entity_type', 'entity_bundle'),
+      'idx_ebrid_type_bundle_lang' => array('entity_type', 'entity_bundle', 'language'),
+    ),
+  );
+
+  $schema['cache_entity_bundle_redirect'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_entity_bundle_redirect']['description'] = 'Cache table for Entity Bundle redirect.';
+
+  return $schema;
+
+}
