@@ -2,7 +2,8 @@
 
 /**
  * @file
- * Install, update and uninstall functions for the entity_bundle_redirect module.
+ * Install, update and uninstall functions for the
+ * entity_bundle_redirect module.
  */
 
 /**
@@ -50,14 +51,25 @@ function entity_bundle_redirect_schema() {
     ),
     'primary key' => array('ebrid'),
     'unique keys' => array(
-      'uk_ebrid_type_bundle_lang' => array('entity_type', 'entity_bundle', 'language'),
+      'uk_ebrid_type_bundle_lang' => array(
+        'entity_type',
+        'entity_bundle',
+        'language',
+      ),
     ),
     'indexes' => array(
       'idx_ebrid_type' => array('entity_type'),
       'idx_ebrid_bundle' => array('entity_bundle'),
       'idx_ebrid_lang' => array('language'),
-      'idx_ebrid_type_bundle' => array('entity_type', 'entity_bundle'),
-      'idx_ebrid_type_bundle_lang' => array('entity_type', 'entity_bundle', 'language'),
+      'idx_ebrid_type_bundle' => array(
+        'entity_type',
+        'entity_bundle',
+      ),
+      'idx_ebrid_type_bundle_lang' => array(
+        'entity_type',
+        'entity_bundle',
+        'language',
+      ),
     ),
   );
 

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @file
  * This module allows to create 301 redirections for unused entity paths,
  * by bundle and language.
  *
@@ -75,7 +76,7 @@ function entity_bundle_redirect_init() {
         $url = entity_bundle_redirect_load_url($entity_id, $entity_id, $entity);
       }
       if ($url) {
-        _entity_bundle_redirect_goto($url);
+        entity_bundle_redirect_goto($url);
       }
     }
   }
@@ -91,7 +92,7 @@ function entity_bundle_redirect_init() {
  *   (optional) The HTTP status code to use for the redirection,
  *   defaults to 301.
  */
-function _entity_bundle_redirect_goto($url, $http_response_code = 301) {
+function entity_bundle_redirect_goto($url, $http_response_code = 301) {
 
   header('Location: ' . $url, TRUE, $http_response_code);
   drupal_exit($url);
@@ -124,8 +125,7 @@ function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL)
     ->condition('entity_type', $entity_type)
     ->condition('entity_bundle', $bundle)
     ->condition('language', $lang)
-    ->execute()
-  ;
+    ->execute();
 
   if ($row = $sql->fetchAssoc()) {
     return $row['link_path'];
@@ -140,8 +140,7 @@ function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL)
         ->condition('entity_type', $entity_type)
         ->condition('entity_bundle', $bundle)
         ->condition('language', LANGUAGE_NONE)
-        ->execute()
-      ;
+        ->execute();
       if ($row = $sql->fetchAssoc()) {
         return $row['link_path'];
       }
@@ -159,7 +158,7 @@ function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL)
  * @param $url
  *   The original URL to transform.
  */
-function _entity_bundle_generate_url($url) {
+function entity_bundle_generate_url($url) {
 
   $has_query = FALSE;
   $urlarray = explode('?', $url);
@@ -216,7 +215,7 @@ function entity_bundle_redirect_load_url($entity_type, $bundle, $entity) {
             )
           );
         }
-        $path = _entity_bundle_generate_url($path);
+        $path = entity_bundle_generate_url($path);
       }
       $info = array(
         'entity_type' => $entity_type,
@@ -273,8 +272,7 @@ function entity_bundle_redirect_save_url($entity_type, $bundle, $path, $lang = N
       ->condition('entity_type', $entity_type)
       ->condition('entity_bundle', $bundle)
       ->condition('language', $lang)
-      ->execute()
-    ;
+      ->execute();
   }
   else {
     db_insert('entity_bundle_redirect')
@@ -286,8 +284,7 @@ function entity_bundle_redirect_save_url($entity_type, $bundle, $path, $lang = N
           'language' => $lang,
         )
       )
-      ->execute()
-    ;
+      ->execute();
   }
 
 }
