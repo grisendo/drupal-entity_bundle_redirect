@@ -86,9 +86,9 @@ function entity_bundle_redirect_init() {
 /**
  * Auxiliar function to send the user to a different page.
  *
- * @param $url
+ * @param string $url
  *   The URL to redirect, internal (already processed) or external.
- * @param $http_reponse_code
+ * @param integer $http_response_code
  *   (optional) The HTTP status code to use for the redirection,
  *   defaults to 301.
  */
@@ -155,10 +155,10 @@ function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL)
 /**
  * Converts an plain URL into a Drupal processed URL.
  *
- * @param $url
+ * @param string $url
  *   The original URL to transform.
  */
-function entity_bundle_generate_url($url) {
+function entity_bundle_redirect_generate_url($url) {
 
   $has_query = FALSE;
   $urlarray = explode('?', $url);
@@ -182,14 +182,13 @@ function entity_bundle_generate_url($url) {
 }
 
 /**
- * Determines the URL to redirect, depending on both stored
- * configuration and implemented hooks (if any).
+ * Determines the URL to redirect, depending on configuration and hooks.
  *
- * @param $entity_type
+ * @param string $entity_type
  *   The entity type of the current path.
- * @param $bundle
+ * @param string $bundle
  *   The entity bundle of the current path.
- * @param $entity
+ * @param stdClass $entity
  *   The complete entity object of the current path.
  */
 function entity_bundle_redirect_load_url($entity_type, $bundle, $entity) {
@@ -215,7 +214,7 @@ function entity_bundle_redirect_load_url($entity_type, $bundle, $entity) {
             )
           );
         }
-        $path = entity_bundle_generate_url($path);
+        $path = entity_bundle_redirect_generate_url($path);
       }
       $info = array(
         'entity_type' => $entity_type,
@@ -241,13 +240,13 @@ function entity_bundle_redirect_load_url($entity_type, $bundle, $entity) {
 /**
  * Saves a redirection into the database.
  *
- * @param $entity_type
+ * @param string $entity_type
  *   The entity type (node, taxonomy...) the redirection is made for.
- * @param $bundle
+ * @param string $bundle
  *   The bundle (content type, vocabulary...) the redirection is made for.
- * @param $path
+ * @param string $path
  *   The URL that will be stored.
- * @param $lang
+ * @param string $lang
  *   (optional) The language the redirection is made for,
  *   defaults to current site language.
  */
