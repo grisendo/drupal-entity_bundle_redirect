@@ -88,7 +88,7 @@ function entity_bundle_redirect_init() {
  *
  * @param string $url
  *   The URL to redirect, internal (already processed) or external.
- * @param integer $http_response_code
+ * @param int $http_response_code
  *   (optional) The HTTP status code to use for the redirection,
  *   defaults to 301.
  */
@@ -102,11 +102,11 @@ function entity_bundle_redirect_goto($url, $http_response_code = 301) {
 /**
  * Loads a stored redirection from database.
  *
- * @param $entity_type
+ * @param string $entity_type
  *   The entity type (node, taxonomy...) the redirection is made for.
- * @param $bundle
+ * @param string $bundle
  *   The bundle (content type, vocabulary...) the redirection is made for.
- * @param $lang
+ * @param string $lang
  *   (optional) The language the redirection is made for,
  *   defaults to current site language.
  */
