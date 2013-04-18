@@ -106,7 +106,7 @@ function entity_bundle_redirect_admin_page_submit($form, &$form_state) {
       }
     }
   }
-  // TO-DO: CACHE CLEAR ALL!!!
+  cache_clear_all('*', 'cache_entity_bundle_redirect', TRUE);
   drupal_set_message(t('Entity Bundle redirections saved.'));
 
 }
