@@ -84,6 +84,22 @@ function entity_bundle_redirect_init() {
 }
 
 /**
+ * Implements hook_features_api().
+ */
+function entity_bundle_redirect_features_api() {
+
+  return array(
+    'entity_bundle_redirect' => array(
+      'name' => 'Entity bundle Redirect',
+      'file' => drupal_get_path('module', 'entity_bundle_redirect') . '/includes/entity_bundle_redirect.features.inc',
+      'default_hook' => 'entity_bundle_redirect_default_config',
+      'feature_source' => TRUE,
+    ),
+  );
+
+}
+
+/**
  * Auxiliar function to send the user to a different page.
  *
  * @param string $url
