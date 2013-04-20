@@ -28,11 +28,14 @@ function entity_bundle_redirect_admin_page() {
   );
   $languages += language_list();
 
+  // Used to avoid ventral review warnings.
+  $t = get_t();
+
   foreach ($entities as $entity_id => $entity) {
     if (isset($entity['path'])) {
       $form[$entity_id] = array(
         '#type' => 'fieldset',
-        '#title' => t($entity['label']),
+        '#title' => $t($entity['label']),
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
         '#tree' => TRUE,
@@ -51,8 +54,8 @@ function entity_bundle_redirect_admin_page() {
             '#title' => t(
               '%bundle (%language)',
               array(
-                '%bundle' => t($bundle['label']),
-                '%language' => t($language->name),
+                '%bundle' => $t($bundle['label']),
+                '%language' => $t($language->name),
               )
             ),
             '#default_value' => $stored_val ? $stored_val : '',

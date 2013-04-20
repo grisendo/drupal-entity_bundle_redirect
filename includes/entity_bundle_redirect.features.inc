@@ -10,6 +10,9 @@
  */
 function entity_bundle_redirect_features_export_options() {
 
+  // Used to avoid ventral review warnings.
+  $t = get_t();
+
   $sql = db_select('entity_bundle_redirect', 'b')
     ->fields('b')
     ->execute();
@@ -17,7 +20,7 @@ function entity_bundle_redirect_features_export_options() {
   $languages = language_list();
   while ($row = $sql->fetchAssoc()) {
     $key = $row['entity_type'] . ':' . $row['entity_bundle'] . ':' . $row['language'];
-    $name = $row['entity_type'] . ': ' . $row['entity_bundle'] . ' (' . t($languages[$row['language']]->name) . ')';
+    $name = $row['entity_type'] . ': ' . $row['entity_bundle'] . ' (' . $t($languages[$row['language']]->name) . ')';
     $options[$key] = $name;
   }
   return $options;
