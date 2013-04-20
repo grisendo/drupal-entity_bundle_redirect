@@ -10,14 +10,17 @@
  */
 function entity_bundle_redirect_features_export_options() {
 
-  /*$sql = db_select('whos_amung_us_block', 'b')
+  $sql = db_select('entity_bundle_redirect', 'b')
     ->fields('b')
     ->execute();
   $options = array();
+  $languages = language_list();
   while ($row = $sql->fetchAssoc()) {
-    $options[$row['machine_name']] = $row['info'];
+    $key = $row['entity_type'] . ':' . $row['entity_bundle'] . ':' . $row['language'];
+    $name = $row['entity_type'] . ': ' . $row['entity_bundle'] . ' (' . t($languages[$row['language']]->name) . ')';
+    $options[$key] = $name;
   }
-  return $options;*/
+  return $options;
 
 }
 
@@ -26,18 +29,19 @@ function entity_bundle_redirect_features_export_options() {
  */
 function entity_bundle_redirect_features_export($data, &$export, $module_name = '') {
 
-  /*$export['dependencies']['features'] = 'features';
-  $export['dependencies']['whos_amung_us'] = 'whos_amung_us';
-  $export['dependencies']['block'] = 'block';
-  $sql = db_select('whos_amung_us_block', 'b')
-    ->fields('b', array('machine_name'))
+  $export['dependencies']['features'] = 'features';
+  $export['dependencies']['entity_bundle_redirect'] = 'entity_bundle_redirect';
+  $export['dependencies']['token'] = 'token';
+  $sql = db_select('entity_bundle_redirect', 'ebr')
+    ->fields('ebr')
     ->execute();
   while ($row = $sql->fetchAssoc()) {
-    if (in_array($row['machine_name'], $data)) {
-      $export['features']['whos_amung_us'][$row['machine_name']] = $row['machine_name'];
+    $key = $row['entity_type'] . ':' . $row['entity_bundle'] . ':' . $row['language'];
+    if (in_array($key, $data)) {
+      $export['features']['entity_bundle_redirect'][$key] = $key;
     }
   }
-  return $export;*/
+  return $export;
 
 }
 
@@ -46,21 +50,25 @@ function entity_bundle_redirect_features_export($data, &$export, $module_name = 
  */
 function entity_bundle_redirect_features_export_render($module, $data) {
 
-  /*$code[] = '  $whos_amung_us = array();';
+  $code[] = '  $entity_bundle_redirect = array();';
   $code[] = '';
   foreach ($data as $delta) {
-    $block = whos_amung_us_item_load($delta);
-    if ($block) {
-      unset($block['bid']);
-      $block_export = features_var_export($block, '  ');
-      $code[] = '  // Exported whos.amung.us block: ' . $block['info'];
-      $code[] = '  $whos_amung_us[\'' . $delta . '\'] = ' . $block_export . ';';
+    $data_array = explode(':', $delta);
+    $redirection = entity_bundle_redirect_load_stored(
+      $data_array[0],
+      $data_array[1],
+      $data_array[2]
+    );
+    if ($redirection) {
+      $redirection_export = features_var_export($redirection, '  ');
+      $code[] = '  // Exported entity bundle redirection: ' . $delta;
+      $code[] = '  $entity_bundle_redirect[\'' . $delta . '\'] = ' . $redirection_export . ';';
       $code[] = '';
     }
   }
-  $code[] = '  return $whos_amung_us;';
+  $code[] = '  return $entity_bundle_redirect;';
   $code = implode("\n", $code);
-  return array('whos_amung_us_default_blocks' => $code);*/
+  return array('entity_bundle_redirect_default_config' => $code);
 
 }
 
@@ -69,10 +77,17 @@ function entity_bundle_redirect_features_export_render($module, $data) {
  */
 function entity_bundle_redirect_features_revert($module) {
 
-  /*module_load_include('inc', 'features', 'features.export');
-  foreach (features_get_default('whos_amung_us', $module) as $key => $block) {
-    whos_amung_us_feature_update_block($block);
-  }*/
+  module_load_include('inc', 'features', 'features.export');
+  foreach (features_get_default('entity_bundle_redirect', $module) as $key => $url) {
+    $data_array = explode(':', $key);
+    entity_bundle_redirect_save_url(
+      $data_array[0],
+      $data_array[1],
+      $url,
+      $data_array[2]
+    );
+  }
+  cache_clear_all('*', 'cache_entity_bundle_redirect', TRUE);
 
 }
 
