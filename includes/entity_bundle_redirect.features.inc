@@ -3,6 +3,8 @@
 /**
  * @file
  * Intergrates Entity bundle Redirect with Features.
+ *
+ * @author Francisco J. Cruz Romanos <grisendo@gmail.com>
  */
 
 /**

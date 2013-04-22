@@ -84,6 +84,15 @@ function entity_bundle_redirect_init() {
 }
 
 /**
+ * Implements hook_flush_caches().
+ */
+function entity_bundle_redirect_flush_caches() {
+
+  return array('cache_entity_bundle_redirect');
+
+}
+
+/**
  * Implements hook_features_api().
  */
 function entity_bundle_redirect_features_api() {
@@ -209,8 +218,8 @@ function entity_bundle_redirect_generate_url($url) {
  */
 function entity_bundle_redirect_load_url($entity_type, $bundle, $entity) {
 
-  $cache_type = md5($_GET['q']);
-  $cache_id = __FUNCTION__ . '_' . $cache_type;
+  global $language;
+  $cache_id = __FUNCTION__ . ':' . md5($_GET['q']) . ':' . $language->language;
   $path = &drupal_static($cache_id, FALSE);
 
   if ($path === FALSE) {

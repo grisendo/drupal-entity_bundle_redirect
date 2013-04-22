@@ -3,6 +3,8 @@
 /**
  * @file
  * Administration pages provided by entity_bundle_redirect module.
+ *
+ * @author Francisco J. Cruz Romanos <grisendo@gmail.com>
  */
 
 /**

@@ -3,6 +3,8 @@
 /**
  * @file
  * Sample hooks demonstrating usage in Entity bundle Redirect.
+ *
+ * @author Francisco J. Cruz Romanos <grisendo@gmail.com>
  */
 
 /**

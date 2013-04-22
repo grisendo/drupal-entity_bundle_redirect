@@ -4,6 +4,8 @@
  * @file
  * Install, update and uninstall functions for the
  * entity_bundle_redirect module.
+ *
+ * @author Francisco J. Cruz Romanos <grisendo@gmail.com>
  */
 
 /**
@@ -77,5 +79,14 @@ function entity_bundle_redirect_schema() {
   $schema['cache_entity_bundle_redirect']['description'] = 'Cache table for Entity Bundle redirect.';
 
   return $schema;
+
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function entity_bundle_redirect_update_7001() {
+
+  cache_clear_all('*', 'cache_entity_bundle_redirect', TRUE);
 
 }
