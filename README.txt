@@ -8,6 +8,7 @@ CONTENTS OF THIS README
    * Description
    * Dependencies
    * Installation
+   * Changelog
    * Support
    * Credits
 
@@ -26,7 +27,8 @@ type that must remain hidden).
 Another useful case, is when you desire to redirect Taxonomy term page to
 an existing View page, with a given exposed filter selected ($_GET parameter).
 
-The configurable redirections are compatible with tokens.
+The configurable redirections are compatible with tokens, and exportable
+via features.
 
 A 'entity_bundle_redirect_alter' hook is available, so you can modify
 the redirection "on the fly" for each entity.
@@ -47,6 +49,18 @@ INSTALLATION
 3. Go to settings page via admin/config/search/entity-bundle-redirect
    or Configuration -> Search and metadata -> Entity bundle Redirect
    and configure the redirections as desired.
+
+
+CHANGELOG
+---------
+
+7.x-1-1
+  Language bug concerning caches fixed (not reported in issues queue).
+  Cache table is now flushed when flushing all caches.
+  Features integration.
+
+7.x-1.0
+  First functional version.
 
 
 SUPPORT
