@@ -36,7 +36,9 @@ function entity_bundle_redirect_features_export($data, &$export, $module_name = 
 
   $export['dependencies']['features'] = 'features';
   $export['dependencies']['entity_bundle_redirect'] = 'entity_bundle_redirect';
-  $export['dependencies']['token'] = 'token';
+  if (module_exists('token')) {
+    $export['dependencies']['token'] = 'token';
+  }
   $sql = db_select('entity_bundle_redirect', 'ebr')
     ->fields('ebr')
     ->execute();

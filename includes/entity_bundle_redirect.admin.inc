@@ -38,12 +38,12 @@ function entity_bundle_redirect_admin_page() {
         'Install and enable !url in order to take advantage of advanced path configuration options.',
         array(
           '!url' => l(
-            'Token module',
+            t('Token module'),
             'http://drupal.org/project/token',
             array(
               'attributes' => array(
                 'target' => '_blank',
-              )
+              ),
             )
           ),
         )

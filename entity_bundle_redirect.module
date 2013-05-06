@@ -50,7 +50,7 @@ function entity_bundle_redirect_init() {
   $menu_item = menu_get_item();
   $entities = entity_get_info();
   $entity_type = NULL;
-  
+
   foreach ($entities as $entity_id => $entity) {
     if (
       isset($entity['uri callback'])
@@ -136,7 +136,7 @@ function entity_bundle_redirect_goto($url, $http_response_code = 301) {
  * @param string $lang
  *   (optional) The language the redirection is made for,
  *   defaults to current site language.
- * @param boolean $fallback
+ * @param bool $fallback
  *   (optional) Determines if it should search LANGUAGE_NONE redirection,
  *   if redirection for given language is not found, defaults to TRUE.
  */
