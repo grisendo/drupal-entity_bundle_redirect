@@ -30,6 +30,28 @@ function entity_bundle_redirect_admin_page() {
   );
   $languages += language_list();
 
+  $token_exists = module_exists('token');
+
+  if (!$token_exists) {
+    drupal_set_message(
+      t(
+        'Install and enable !url in order to take advantage of advanced path configuration options.',
+        array(
+          '!url' => l(
+            'Token module',
+            'http://drupal.org/project/token',
+            array(
+              'attributes' => array(
+                'target' => '_blank',
+              )
+            )
+          ),
+        )
+      ),
+      'warning'
+    );
+  }
+
   // Used to avoid ventral review warnings.
   $t = get_t();
 
@@ -67,18 +89,26 @@ function entity_bundle_redirect_admin_page() {
             '#element_validate' => array('token_element_validate'),
             '#after_build' => array('token_element_validate'),
           );
+          if (!$token_exists) {
+            $form[$entity_id][$type][$lang_key]['#description'] = t('Redirection URL, empty for no redirection.');
+            unset($form[$entity_id][$type][$lang_key]['#token_types']);
+            unset($form[$entity_id][$type][$lang_key]['#element_validate']);
+            unset($form[$entity_id][$type][$lang_key]['#after_build']);
+          }
         }
       }
-      $form[$entity_id]['token_help'] = array(
-        '#title' => t('Replacement patterns'),
-        '#type' => 'fieldset',
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-      );
-      $form[$entity_id]['token_help']['help'] = array(
-        '#theme' => 'token_tree',
-        '#token_types' => array($token_type),
-      );
+      if ($token_exists) {
+        $form[$entity_id]['token_help'] = array(
+          '#title' => t('Replacement patterns'),
+          '#type' => 'fieldset',
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+        );
+        $form[$entity_id]['token_help']['help'] = array(
+          '#theme' => 'token_tree',
+          '#token_types' => array($token_type),
+        );
+      }
     }
   }
 

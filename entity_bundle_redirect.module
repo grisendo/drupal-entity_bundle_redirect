@@ -236,13 +236,15 @@ function entity_bundle_redirect_load_url($entity_type, $bundle, $entity) {
       global $language;
       $path = entity_bundle_redirect_load_stored($entity_type, $bundle, $language);
       if ($path) {
-        if (strpos($path, '[') !== FALSE) {
-          $path = token_replace(
-            $path,
-            array(
-              $entity_type => $entity,
-            )
-          );
+        if (module_exists('token')) {
+          if (strpos($path, '[') !== FALSE) {
+            $path = token_replace(
+              $path,
+              array(
+                $entity_type => $entity,
+              )
+            );
+          }
         }
         $path = entity_bundle_redirect_generate_url($path);
       }

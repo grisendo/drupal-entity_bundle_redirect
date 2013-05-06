@@ -37,7 +37,11 @@ the redirection "on the fly" for each entity.
 DEPENDENCIES
 ------------
 
-Token module (http://drupal.org/project/token)
+This module has no dependencies since 7.x-1.2 version.
+
+Anyway, Token module is recommended in order to take advantage of special
+and advanced URL configuration options: 
+http://drupal.org/project/token
 
 
 INSTALLATION
@@ -56,6 +60,7 @@ CHANGELOG
 
 7.x-1.2
   Fixed Issue #1988174, by @FiNeX: Empty settings page. 
+  Removed Token dependence (but integrated with tokens, if installed).
 
 7.x-1.1
   Language bug concerning caches fixed (not reported in issues queue).
