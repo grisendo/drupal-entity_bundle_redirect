@@ -28,7 +28,7 @@ Another useful case, is when you desire to redirect Taxonomy term page to
 an existing View page, with a given exposed filter selected ($_GET parameter).
 
 The configurable redirections are compatible with tokens, and exportable
-via features.
+via Features.
 
 A 'entity_bundle_redirect_alter' hook is available, so you can modify
 the redirection "on the fly" for each entity.
@@ -54,7 +54,10 @@ INSTALLATION
 CHANGELOG
 ---------
 
-7.x-1-1
+7.x-1.2
+  Fixed Issue #1988174, by @FiNeX: Empty settings page. 
+
+7.x-1.1
   Language bug concerning caches fixed (not reported in issues queue).
   Cache table is now flushed when flushing all caches.
   Features integration.

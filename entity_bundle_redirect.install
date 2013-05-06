@@ -25,14 +25,14 @@ function entity_bundle_redirect_schema() {
       'entity_type' => array(
         'description' => 'The type of this entity.',
         'type' => 'varchar',
-        'length' => 32,
+        'length' => 64,
         'not null' => TRUE,
         'default' => '',
       ),
       'entity_bundle' => array(
         'description' => 'The bundle of this entity.',
         'type' => 'varchar',
-        'length' => 32,
+        'length' => 64,
         'not null' => TRUE,
         'default' => '',
       ),
@@ -88,5 +88,73 @@ function entity_bundle_redirect_schema() {
 function entity_bundle_redirect_update_7001() {
 
   cache_clear_all('*', 'cache_entity_bundle_redirect', TRUE);
+
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function entity_bundle_redirect_update_7002() {
+
+  db_drop_index('entity_bundle_redirect', 'idx_ebrid_type');
+  db_drop_index('entity_bundle_redirect', 'idx_ebrid_bundle');
+  db_drop_index('entity_bundle_redirect', 'idx_ebrid_type_bundle');
+  db_drop_index('entity_bundle_redirect', 'idx_ebrid_type_bundle_lang');
+  db_drop_unique_key('entity_bundle_redirect', 'uk_ebrid_type_bundle_lang');
+
+  db_change_field(
+    'entity_bundle_redirect',
+    'entity_type',
+    'entity_type',
+    array(
+      'description' => 'The type of this entity.',
+      'type' => 'varchar',
+      'length' => 64,
+      'not null' => TRUE,
+      'default' => '',
+    )
+  );
+  db_change_field(
+    'entity_bundle_redirect',
+    'entity_bundle',
+    'entity_bundle',
+    array(
+      'description' => 'The bundle of this entity.',
+      'type' => 'varchar',
+      'length' => 64,
+      'not null' => TRUE,
+      'default' => '',
+    )
+  );
+
+  db_add_index(
+    'entity_bundle_redirect',
+    'idx_ebrid_type',
+    array('entity_type')
+  );
+  db_add_index(
+    'entity_bundle_redirect',
+    'idx_ebrid_bundle',
+    array('entity_bundle')
+  );
+  db_add_index(
+    'entity_bundle_redirect',
+    'idx_ebrid_type_bundle',
+    array('entity_type', 'entity_bundle')
+  );
+  db_add_index(
+    'entity_bundle_redirect',
+    'idx_ebrid_type_bundle_lang',
+    array('entity_type', 'entity_bundle', 'language')
+  );
+  db_add_unique_key(
+    'entity_bundle_redirect',
+    'uk_ebrid_type_bundle_lang',
+    array(
+      'entity_type',
+      'entity_bundle',
+      'language',
+    )
+  );
 
 }

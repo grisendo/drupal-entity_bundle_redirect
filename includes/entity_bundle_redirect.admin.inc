@@ -34,7 +34,7 @@ function entity_bundle_redirect_admin_page() {
   $t = get_t();
 
   foreach ($entities as $entity_id => $entity) {
-    if (isset($entity['path'])) {
+    if (isset($entity['uri callback'])) {
       $form[$entity_id] = array(
         '#type' => 'fieldset',
         '#title' => $t($entity['label']),
@@ -103,9 +103,7 @@ function entity_bundle_redirect_admin_page_submit($form, &$form_state) {
       foreach ($bundles as $bundle => $langs) {
         if (is_array($langs)) {
           foreach ($langs as $lang_key => $value) {
-            if (trim($value)) {
-              entity_bundle_redirect_save_url($entity_type, $bundle, trim($value), $lang_key);
-            }
+            entity_bundle_redirect_save_url($entity_type, $bundle, trim($value), $lang_key);
           }
         }
       }

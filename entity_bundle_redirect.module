@@ -50,16 +50,18 @@ function entity_bundle_redirect_init() {
   $menu_item = menu_get_item();
   $entities = entity_get_info();
   $entity_type = NULL;
+  
   foreach ($entities as $entity_id => $entity) {
-    $load_funct = str_replace('_load', '', $entity['load hook']);
     if (
-      isset($entity['path'])
+      isset($entity['uri callback'])
       &&
-      (
-        ($menu_item['path'] == $entity['path'])
-        ||
-        (($menu_item['path'] . $load_funct) == $entity['path'])
-      )
+      isset($entity['load hook'])
+      &&
+      isset($menu_item['load_functions'])
+      &&
+      is_array($menu_item['load_functions'])
+      &&
+      in_array($entity['load hook'], $menu_item['load_functions'])
     ) {
       $entity_type = $entity;
       break;
@@ -134,8 +136,11 @@ function entity_bundle_redirect_goto($url, $http_response_code = 301) {
  * @param string $lang
  *   (optional) The language the redirection is made for,
  *   defaults to current site language.
+ * @param boolean $fallback
+ *   (optional) Determines if it should search LANGUAGE_NONE redirection,
+ *   if redirection for given language is not found, defaults to TRUE.
  */
-function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL) {
+function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL, $fallback = TRUE) {
 
   if (!$lang) {
     global $language;
@@ -153,10 +158,10 @@ function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL)
     ->execute();
 
   if ($row = $sql->fetchAssoc()) {
-    return $row['link_path'];
+    return $row['link_path'] ? $row['link_path'] : '';
   }
   else {
-    if ($lang === LANGUAGE_NONE) {
+    if (!($fallback) || ($lang === LANGUAGE_NONE)) {
       return NULL;
     }
     else {
@@ -167,7 +172,7 @@ function entity_bundle_redirect_load_stored($entity_type, $bundle, $lang = NULL)
         ->condition('language', LANGUAGE_NONE)
         ->execute();
       if ($row = $sql->fetchAssoc()) {
-        return $row['link_path'];
+        return $row['link_path'] ? $row['link_path'] : '';
       }
       else {
         return NULL;
@@ -285,7 +290,7 @@ function entity_bundle_redirect_save_url($entity_type, $bundle, $path, $lang = N
     $lang = $lang->language;
   }
 
-  $exists = entity_bundle_redirect_load_stored($entity_type, $bundle);
+  $exists = entity_bundle_redirect_load_stored($entity_type, $bundle, $lang, FALSE);
   if ($exists !== NULL) {
     db_update('entity_bundle_redirect')
       ->fields(
